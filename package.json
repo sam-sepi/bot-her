@@ -1,0 +1,14 @@
+{
+  "name": "bother",
+  "version": "1.0.0",
+  "description": "First apporach discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sam Sepi",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
+}
