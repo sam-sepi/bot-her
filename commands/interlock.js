@@ -17,7 +17,7 @@ module.exports =
         }
         else if(skill)
         {
-            message.channel.send(`Interlock d10. Rolled ${skill}:` + (dice + 5));
+            message.channel.send(`Interlock d10. Rolled ${skill}: ` + (dice + 5));
         }
         else
         {
