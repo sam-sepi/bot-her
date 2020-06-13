@@ -5,7 +5,7 @@ module.exports =
     description: 'Interlock d10 dice roll',
     execute(message, args)
     {
-        skills = ['empatia'];
+        skills = ['pistole'];
 
         const skill = args[0];
 
@@ -17,7 +17,7 @@ module.exports =
         }
         else if(skill)
         {
-            message.channel.send(`Interlock d10. Rolled ${skill}: ` + (dice + 5));
+            message.channel.send(`Interlock d10. riflessi 5 + ${skill} 4 + dado ${dice}: ` + (dice + 9));
         }
         else
         {

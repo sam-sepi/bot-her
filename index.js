@@ -34,7 +34,7 @@ client.on('message', message =>
     } catch(error) 
     {
 		console.error(error);
-		message.reply('Comando non riconosciuto.');
+		message.reply('il tornello ti blocca. Comando non riconosciuto');
 	}
 });
 
