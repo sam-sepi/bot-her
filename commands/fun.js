@@ -1,8 +1,8 @@
  
 module.exports = 
 {
-	name: 'alpha',
-	description: 'Alpha',
+	name: 'fun',
+	description: 'Fun msg!',
     execute(message) 
     {
         let questions = 
