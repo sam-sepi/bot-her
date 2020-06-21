@@ -14,10 +14,6 @@ const client = new Discord.Client();
 //Discord.Collection extends Js MAP https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map
 client.commands = new Discord.Collection();
 
-//DB
-var Datastore = require('nedb'), 
-	db = new Datastore({ filename: './users.db', autoload: true });
-
 //Read files in commands folder
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
