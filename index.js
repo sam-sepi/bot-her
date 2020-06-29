@@ -60,4 +60,10 @@ client.on('message', message =>
 	}
 });
 
+//WELCOME
+client.on('guildMemberAdd', member => 
+{
+	member.send("Ehi Choomba benvenuto nel server TEST. Per creare il tuo personaggio, vai nel canale *build* e digita *!charname* seguito dal nome che vuoi assegnargli. Ad esempio Esempio: !charname Joe");
+});
+
 client.login(token);

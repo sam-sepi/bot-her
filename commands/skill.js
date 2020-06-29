@@ -23,13 +23,77 @@ module.exports =
         classes.ricettatore = ['Contatti', 'Mischia', 'Falsificare', 'Intimidire', 'Rissa', 'Raggirare', 'Persuadere', 'Scassinare'];
         classes.nomade = ['Famiglia', 'Guidare', 'Atletica', 'Percepire', 'Fucili', 'Resistenza', 'Riparare', 'Mischia'];
 
+        var roles_toString = roles.join(', ');
+
         if(args[0])
         {
-            sk = args[0].toLowerCase();
-
             db.users.findOne({ userid: message.author.id}, (err, character) =>
             {
-                help = {};
+                if(character.role == null)
+                {
+                    message.channel.send(`Prima devi selezionare il tuo ruolo. Scegli tra ${roles_toString}`);
+                }
+                else
+                {
+                    var ch = character.role.toLowerCase();
+                    var to_str = classes[ch].join(', ');
+
+                    if(classes[ch].includes(args[0]))
+                    {
+                        if(isNaN(args[1]))
+                        {
+                            message.channel.send(`Per registrare la skill ${args[0]} devi far seguire un numero. !skill Rissa 4`);
+                        }
+                        else
+                        {
+                            if(args[1] < 11 && args[1] > 0)
+                            {
+                                skill = 
+                                {
+                                    userid: message.author.id,
+                                    name: character.name,
+                                    skill: args[0],
+                                    rank: args[1]
+                                };
+
+                                db.skills.findOne({userid: message.author.id, skill: args[0]}, (err, character) => 
+                                {
+                                    if(character == null)
+                                    {
+                                        db.skills.insert(skill, (err, newCharacter) => 
+                                        {
+                                            console.log(err);
+                                            message.channel.send(`Abilità ${args[0]} inserita.`);
+
+                                        });
+                                    }
+                                    else
+                                    {
+                                        db.skills.update({userid: message.author.id, skill: args[0]}, {$set: {rank: args[1]}}, {}, (err, numReplaced) => 
+                                        {
+                                            console.log(numReplaced);
+                                            message.channel.send(`Abilità ${args[0]} aggiornata.`);
+                                        });
+                                    }
+                                });  
+                            }
+                            else
+                            {
+                                message.channel.send(`L'abilità ${args[0]} deve essere compresa tra 1 e 10`);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        message.channel.send(`La lista delle abilità della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne sono alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
+                    }
+                }
+            });
+        }
+        else
+        {
+            db.users.findOne({ userid: message.author.id}, (err, character) =>
+            {
                 var roles_toString = roles.join(', ');
 
                 if(character.role == null)
@@ -40,39 +104,9 @@ module.exports =
                 {
                     var ch = character.role.toLowerCase();
                     var to_str = classes[ch].join(', ');
-
-                    help.err = `La lista delle abilità della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Ex: !skill Rissa 4`;
-
-                    if(classes[ch].includes(args[0]))
-                    {
-                        if(isNaN(args[1]))
-                        {
-                            help.nan = `Per registrare la skill ${args[0]} devi far seguire un numero. !skill Rissa 4`;
-                            message.channel.send(help.nan);
-                        }
-                        else
-                        {
-                            skill = 
-                            {
-                                userid: message.author.id,
-                                name: character.name,
-                                skill: args[0],
-                                rank: args[1]
-                            };
-
-                            db.skills.insert(skill, (err, newCharacter) => 
-                            {
-                                console.log(err);
-                            });
-                
-                        }
-                    }
-                    else
-                    {
-                        message.channel.send(help.err);
-                    }
+                    message.channel.send(`La lista delle abilità della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne sono alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
                 }
-            });
+            });    
         }
     }
 }

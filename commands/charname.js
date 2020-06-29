@@ -4,13 +4,6 @@ module.exports =
     description: 'Character name',
     execute(message, args)
     {
-        help = {};
-        help.duplicate = 'Esiste giù un personaggio associato all\'ID utente';
-        help.len = 'Invia un nome, inferiore a venti caratteri. Esempio: *!charname Joe*';
-        help.name = 'Inserisci il nome del tuo personaggio, utilizzando il comando *!charname* seguito dal nome scelto. Esempio: *!charname Joe*';
-
-        data = {};
-
         //DB INIT
         var Datastore = require('nedb'), db = new Datastore({ filename: './interlock-users.db', autoload: true });
 
@@ -20,7 +13,7 @@ module.exports =
             {
                 if(character != null) 
                 {
-                    message.author.send(help.duplicate);
+                    message.author.send('Esiste giù un personaggio associato all\'ID utente');
                 }
                 else
                 {
@@ -33,6 +26,7 @@ module.exports =
 
                     db.insert(user, (err, newCharacter) => 
                     {
+                        message.channel.send(`Ora choomba diamo un ruolo al personaggio. Digita *!role*.`);
                         console.log(err);
                     });
                 }
@@ -40,7 +34,7 @@ module.exports =
         }
         else
         {
-            message.channel.send(help.len);
+            message.channel.send('Invia un nome, inferiore a venti caratteri. Esempio: *!charname Joe*');
         }
     }
 }
