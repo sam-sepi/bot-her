@@ -5,6 +5,7 @@ module.exports =
     execute(message, args)
     {
         var Datastore = require('nedb');
+
         db = {};
         db.skills = new Datastore({ filename: './interlock-skills.db', autoload: true });
         db.users = new Datastore({ filename: './interlock-users.db', autoload: true });
@@ -42,7 +43,7 @@ module.exports =
                     {
                         if(isNaN(args[1]))
                         {
-                            message.channel.send(`Per registrare la skill ${args[0]} devi far seguire un numero. !skill Rissa 4`);
+                            message.channel.send(`Per registrare la skill professionale ${args[0]} devi far seguire un numero. !skill Rissa 4`);
                         }
                         else
                         {
@@ -63,7 +64,7 @@ module.exports =
                                         db.skills.insert(skill, (err, newCharacter) => 
                                         {
                                             console.log(err);
-                                            message.channel.send(`Abilità ${args[0]} inserita.`);
+                                            message.channel.send(`Abilità ${args[0]} inserita. Una volta utilizzati i 40 punti digita **!freeskill**`);
 
                                         });
                                     }
@@ -72,20 +73,20 @@ module.exports =
                                         db.skills.update({userid: message.author.id, skill: args[0]}, {$set: {rank: args[1]}}, {}, (err, numReplaced) => 
                                         {
                                             console.log(numReplaced);
-                                            message.channel.send(`Abilità ${args[0]} aggiornata.`);
+                                            message.channel.send(`Abilità ${args[0]} aggiornata. Una volta utilizzati i 40 punti digita **!freeskill**`);
                                         });
                                     }
                                 });  
                             }
                             else
                             {
-                                message.channel.send(`L'abilità ${args[0]} deve essere compresa tra 1 e 10`);
+                                message.channel.send(`L'abilità professionale ${args[0]} deve essere compresa tra 1 e 10`);
                             }
                         }
                     }
                     else
                     {
-                        message.channel.send(`La lista delle abilità della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne sono alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
+                        message.channel.send(`Hai **40** punti da distribuire in abilità professionali. La lista delle abilità professionali della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne anche solo alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
                     }
                 }
             });
@@ -104,7 +105,7 @@ module.exports =
                 {
                     var ch = character.role.toLowerCase();
                     var to_str = classes[ch].join(', ');
-                    message.channel.send(`La lista delle abilità della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne sono alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
+                    message.channel.send(`Hai **40** punti da distribuire in abilità professionali. La lista delle abilità professionali della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne anche solo alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
                 }
             });    
         }
