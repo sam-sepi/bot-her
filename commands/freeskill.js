@@ -10,29 +10,29 @@ module.exports =
         db.freeskills = new Datastore({ filename: './interlock-freeskills.db', autoload: true });
         db.users = new Datastore({ filename: './interlock-users.db', autoload: true });
 
-        roles = ['Rocker', 'Solitario', 'Netrunner', 'Tecnico', 'Reporter', 'Poliziotto', 'Corporativo', 'Ricettatore', 'Nomade'];
+        roles = ['rocker', 'solitario', 'netrunner', 'tecnico', 'reporter', 'poliziotto', 'corporativo', 'ricettatore', 'nomade'];
 
         classes = {};
 
-        classes.rocker = ['Leadership', 'Suonare', 'Sprawl', 'Percepire', 'Stile', 'Comporre', 'Raggirare', 'Sedurre'];
-        classes.solitario = ['Mischia', 'Atletica', 'Percepire', 'Fucili', 'Furtività', 'Rissa', 'Forza', 'Pistole'];
-        classes.netrunner = ['Interfaccia', 'Programmare', 'Rete', 'Accademiche', 'Scienze', 'Elettronica', 'Percepire', 'Furtività'];
-        classes.tecnico = ['Riparare', 'Cybertecnologia', 'Scienze', 'Elettronica', 'Guarire', 'Intuire', 'Diagnosi', 'Percepire'];
-        classes.reporter = ['Sprawl', 'Intervistare', 'Mondanità', 'Credibilità', 'Intuire', 'Percepire', 'Raggirare', 'Comporre'];
-        classes.poliziotto = ['Autorità', 'Mischia', 'Sprawl', 'Interrogare', 'Rissa', 'Intuire', 'Pistole', 'Atletica'];
-        classes.corporativo = ['Risorse', 'Trucco', 'Percepire', 'Intuire', 'Persuadere', 'Raggirare', 'Finanza', 'Stile'];
-        classes.ricettatore = ['Contatti', 'Mischia', 'Falsificare', 'Intimidire', 'Rissa', 'Raggirare', 'Persuadere', 'Scassinare'];
-        classes.nomade = ['Famiglia', 'Guidare', 'Atletica', 'Percepire', 'Fucili', 'Resistenza', 'Riparare', 'Mischia'];
+        classes.rocker = ['leadership', 'suonare', 'sprawl', 'percepire', 'stile', 'comporre', 'raggirare', 'sedurre'];
+        classes.solitario = ['mischia', 'atletica', 'percepire', 'fucili', 'furtività', 'rissa', 'forza', 'pistole'];
+        classes.netrunner = ['interfaccia', 'programmare', 'rete', 'accademiche', 'scienze', 'elettronica', 'percepire', 'furtività'];
+        classes.tecnico = ['riparare', 'cybertecnologia', 'scienze', 'elettronica', 'guarire', 'intuire', 'diagnosi', 'percepire'];
+        classes.reporter = ['sprawl', 'intervistare', 'mondanità', 'credibilità', 'intuire', 'percepire', 'raggirare', 'comporre'];
+        classes.poliziotto = ['autorità', 'mischia', 'sprawl', 'interrogare', 'rissa', 'intuire', 'pistole', 'atletica'];
+        classes.corporativo = ['risorse', 'trucco', 'percepire', 'intuire', 'persuadere', 'raggirare', 'finanza', 'stile'];
+        classes.ricettatore = ['contatti', 'mischia', 'falsificare', 'intimidire', 'rissa', 'raggirare', 'persuadere', 'scassinare'];
+        classes.nomade = ['famiglia', 'guidare', 'atletica', 'percepire', 'fucili', 'resistenza', 'riparare', 'mischia'];
 
         //skills
         skills = [
-            'Accademiche', 'Scienze', 'Percepire', 'Pedinare', 'Seminare', 'Rete', 'Finanza', 'Programmare', 'Sopravvivenza', 'Comporre',
-            'Intimidire', 'Volontà', 'Interrogare', 'Sprawl',
-            'Intervistare', 'Mondanità', 'Intuire', 'Persuadere', 'Raggirare', 'Sedurre',
-            'Borseggiare', 'Esplosivi', 'Falsificare', 'Riparare', 'Scassinare', 'Soverglianza', 'Suonare', 'Elettronica', 'Guarire', 'Diagnosi',
-            'Mischia', 'Pistole', 'Fucili', 'Mitra', 'Rissa', 'Danza', 'Furtività', 'Guidare', 'Pilotare', 'Schivare',
-            'Forza', 'Nuotare', 'Resistenza', 'Atletica',
-            'Stile', 'Trucco'
+            'accademiche', 'scienze', 'percepire', 'pedinare', 'seminare', 'rete', 'finanza', 'programmare', 'sopravvivenza', 'comporre',
+            'intimidire', 'volontà', 'interrogare', 'sprawl',
+            'intervistare', 'mondanità', 'intuire', 'persuadere', 'raggirare', 'sedurre',
+            'borseggiare', 'esplosivi', 'falsificare', 'riparare', 'scassinare', 'soverglianza', 'suonare', 'elettronica', 'guarire', 'diagnosi', 'cybertecnologia',
+            'mischia', 'pistole', 'fucili', 'mitra', 'rissa', 'danza', 'furtività', 'guidare', 'pilotare', 'schivare',
+            'forza', 'nuotare', 'resistenza', 'atletica',
+            'stile', 'trucco'
         ];
 
         function arr_diff (a1, a2) {
@@ -60,43 +60,42 @@ module.exports =
 
         var roles_toString = roles.join(', ');
 
-        if(args[0])
+        db.users.findOne({ userid: message.author.id}, (err, character) =>
         {
-            db.users.findOne({ userid: message.author.id}, (err, character) =>
+            if(character.role == null)
             {
-                if(character.role == null)
+                message.channel.send(`Prima devi selezionare il tuo ruolo. Scegli tra **${roles_toString}**`);
+            }
+            else
+            {
+                var role = character.role;
+
+                freeskills = [];
+                freeskills = arr_diff(classes[role], skills);
+                var frees_toS = freeskills.join(', ');
+
+                if(args[0])
                 {
-                    message.channel.send(`Prima devi selezionare il tuo ruolo. Scegli tra ${roles_toString}`);
-                }
-                else
-                {
-                    var ch = character.role.toLowerCase();
-
-                    freeskills = [];
-                    freeskills = arr_diff(classes[ch], skills);
-
-                    var frees_toS = freeskills.join(', ');
-
                     if(freeskills.includes(args[0]))
                     {
                         if(isNaN(args[1]))
                         {
-                            message.channel.send(`Per registrare la skill professionale ${args[0]} devi far seguire un numero. !skill Rissa 4`);
+                            message.channel.send(`Per registrare la skill professionale ${args[0]} devi far seguire un numero. *Esempio:* **!skill rissa 4**`);
                         }
                         else
                         {
-                            freeskill = 
-                            {
-                                userid: message.author.id,
-                                name: character.name,
-                                skill: args[0],
-                                rank: args[1]
-                            };
-
                             db.freeskills.findOne({userid: message.author.id, skill: args[0]}, (err, chr) => 
                             {
                                 if(args[1] < 11 && args[1] > 0)
                                 {
+                                    freeskill = 
+                                    {
+                                        userid: message.author.id,
+                                        name: character.name,
+                                        skill: args[0],
+                                        rank: args[1]
+                                    };
+
                                     if(chr == null)
                                     {
                                         db.freeskills.insert(freeskill, (err, newCharacter) => 
@@ -121,37 +120,17 @@ module.exports =
                                 }
                             }); 
                         }
-                        
                     }
                     else
                     {
-                        var frees_toS = freeskills.join(', ');
-                        message.channel.send(`Hai 12 punti da dividere in abilità non professionali. Scegli tra ${frees_toS}. **Attento alla miuscola choomba** Es.: !freeskill Rissa 4`);
+                        message.channel.send(`Hai **12** punti da dividere in abilità non professionali. Scegli tra *${frees_toS}*. **Attento alla miuscola choomba** Es.: **!freeskill rissa 4**`);
                     }
-
-                }
-            });
-        }
-        else
-        {
-            db.users.findOne({ userid: message.author.id}, (err, character) =>
-            {
-                if(character.role == null)
-                {
-                    message.channel.send(`Prima devi selezionare il tuo ruolo. Scegli tra ${roles_toString}`);
                 }
                 else
                 {
-                    var ch = character.role.toLowerCase();
-
-                    freeskills = [];
-                    freeskills = arr_diff(classes[ch], skills);
-
-                    var frees_toS = freeskills.join(', ');
-
-                    message.channel.send(`Hai 12 punti da dividere in abilità non professionali. Scegli tra ${frees_toS}. **Attento alla miuscola choomba** Es.: !freeskill Rissa 4`);
-                }     
-            });   
-        }
+                    message.channel.send(`Hai **12** punti da dividere in abilità non professionali. Scegli tra *${frees_toS}*. Es.: **!freeskill rissa 4**`);
+                }
+            }    
+        });
     }
 }

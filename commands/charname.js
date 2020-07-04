@@ -34,7 +34,7 @@ module.exports =
         }
         else
         {
-            message.channel.send('Invia un nome, inferiore a venti caratteri. Esempio: *!charname Joe*');
+            message.channel.send('Invia un nome, inferiore a venti caratteri. *Esempio*: **!charname Joe**');
         }
     }
 }

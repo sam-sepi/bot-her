@@ -10,7 +10,8 @@ module.exports =
         db.stats = new Datastore({ filename: './interlock-stats.db', autoload: true });
         db.users = new Datastore({ filename: './interlock-users.db', autoload: true });
 
-        stats = ['Intelligenza', 'Freddezza', 'Empatia', 'Tecnologia', 'Riflessi', 'Costituzione', 'Fascino'];
+        stats = ['intelligenza', 'freddezza', 'empatia', 'tecnologia', 'riflessi', 'costituzione', 'fascino'];
+        var stat_toString = stats.join(', ');
 
         if(args[0])
         {
@@ -22,11 +23,13 @@ module.exports =
                 }
                 else
                 {
+                    args[0] = args[0].toLowerCase();
+
                     if(stats.includes(args[0]))
                     {
                         if(isNaN(args[1]))
                         {
-                            message.channel.send(`Per registrare la statistica ${args[0]} devi far seguire un numero. *Occhio alla maiuscola*! Es.: !stat Freddezza 4.`);
+                            message.channel.send(`Per registrare la statistica ${args[0]} devi far seguire un numero. *Esesmpio*: **!stat freddezza 4.**`);
                         }
                         else
                         {
@@ -42,13 +45,12 @@ module.exports =
 
                                 db.stats.findOne({userid: message.author.id, stat: args[0]}, (err, character) => 
                                 {
-
                                     if(character == null)
                                     {
                                         db.stats.insert(stat, (err, newCharacter) => 
                                         {
                                             console.log(err);
-                                            message.channel.send(`Statistica ${args[0]} inserita. Quando hai terminato con le statistiche digita *!skill*`);
+                                            message.channel.send(`Statistica ${args[0]} inserita. Quando hai terminato con **tutte** le statistiche digita *!skill*`);
                                         });
                                     }
                                     else
@@ -69,16 +71,14 @@ module.exports =
                     }
                     else
                     {
-                        var stat_toString = stats.join(', ');
-                        message.channel.send(`Devi selezionare le statistiche del tuo personaggio. Dai un valore da 3 a 10 a tutte queste abilità ${stat_toString}. Il totale deve essere 50. **Occhio alla maiuscola**! Es.: !stat Freddezza 4.`);
+                        message.channel.send(`Devi selezionare le statistiche del tuo personaggio. Dai un valore da 3 a 10 **a tutte** queste abilità ${stat_toString}. Il totale deve essere 50. *Esesmpio*: **!stat freddezza 4.**`);
                     }
                 }
             });
         }
         else
         {
-            var stat_toString = stats.join(', ');
-            message.channel.send(`Devi selezionare le statistiche del tuo personaggio. Dai un valore da 3 a 10 a tutte queste abilità ${stat_toString}. Il totale deve essere 50. **Occhio alla maiuscola**! Es.: !stat Freddezza 4.`);
+            message.channel.send(`Devi selezionare le statistiche del tuo personaggio. Dai un valore da 3 a 10 **a tutte** queste abilità ${stat_toString}. Il totale deve essere 50. *Esesmpio*: **!stat freddezza 4.**`);
         }
     }
 }

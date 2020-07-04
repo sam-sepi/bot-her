@@ -7,14 +7,18 @@ module.exports =
         //DB INIT
         var Datastore = require('nedb'), db = new Datastore({ filename: './interlock-users.db', autoload: true });
 
-        roles = ['Rocker', 'Solitario', 'Netrunner', 'Tecnico', 'Reporter', 'Poliziotto', 'Corporativo', 'Ricettatore', 'Nomade'];
+        //ROLES LIST
+        roles = ['rocker', 'solitario', 'netrunner', 'tecnico', 'reporter', 'poliziotto', 'corporativo', 'ricettatore', 'nomade'];
 
+        //ROLES TO STRING
         var roles_toString = roles.join(', ');
 
+        //ARG
         if(args[0])
         {
-            let role = args[0];
+            let role = args[0].toLowerCase();
 
+            //IF IN ROLES LIST
             if(roles.includes(role))
             {  
                 db.update({ userid: message.author.id }, {$set: { role: role }}, {}, function(err, numReplaced) 
@@ -23,14 +27,15 @@ module.exports =
                     console.log("replaced: " + numReplaced);
                 });
             }
-            else
+            else //NOT IN ROLES LIST
             {
-                message.channel.send(`Seleziona una classe digitando il comando *!role* seguito da una delle seguenti scelte: ${roles_toString}. **Attenzione alla maiuscola**. Ex.: !role Solitario`);
+                message.channel.send(`Seleziona una classe digitando il comando *!role* seguito da una delle seguenti scelte: ${roles_toString}. Ex.: !role solitario`);
             }
         }
         else
         {
-            message.channel.send(`Seleziona una classe digitando il comando *!role* seguito da una delle seguenti scelte: ${roles_toString}. **Attenzione alla maiuscola**. Ex.: !role Solitario`);
+            //TUTORIAL MSG
+            message.channel.send(`Seleziona una classe digitando il comando *!role* seguito da una delle seguenti scelte: ${roles_toString}. *Esempio*: **!role solitario**`);
         }
     }
 }

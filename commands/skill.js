@@ -10,40 +10,42 @@ module.exports =
         db.skills = new Datastore({ filename: './interlock-skills.db', autoload: true });
         db.users = new Datastore({ filename: './interlock-users.db', autoload: true });
 
-        roles = ['Rocker', 'Solitario', 'Netrunner', 'Tecnico', 'Reporter', 'Poliziotto', 'Corporativo', 'Ricettatore', 'Nomade'];
+        roles = ['rocker', 'solitario', 'netrunner', 'tecnico', 'reporter', 'poliziotto', 'corporativo', 'ricettatore', 'nomade'];
 
         classes = {};
 
-        classes.rocker = ['Leadership', 'Suonare', 'Sprawl', 'Percepire', 'Stile', 'Comporre', 'Raggirare', 'Sedurre'];
-        classes.solitario = ['Mischia', 'Atletica', 'Percepire', 'Fucili', 'Furtività', 'Rissa', 'Forza', 'Pistole'];
-        classes.netrunner = ['Interfaccia', 'Programmare', 'Rete', 'Accademiche', 'Scienze', 'Elettronica', 'Percepire', 'Furtività'];
-        classes.tecnico = ['Riparare', 'Cybertecnologia', 'Scienze', 'Elettronica', 'Guarire', 'Intuire', 'Diagnosi', 'Percepire'];
-        classes.reporter = ['Sprawl', 'Intervistare', 'Mondanità', 'Credibilità', 'Intuire', 'Percepire', 'Raggirare', 'Comporre'];
-        classes.poliziotto = ['Autorità', 'Mischia', 'Sprawl', 'Interrogare', 'Rissa', 'Intuire', 'Pistole', 'Atletica'];
-        classes.corporativo = ['Risorse', 'Trucco', 'Percepire', 'Intuire', 'Persuadere', 'Raggirare', 'Finanza', 'Stile'];
-        classes.ricettatore = ['Contatti', 'Mischia', 'Falsificare', 'Intimidire', 'Rissa', 'Raggirare', 'Persuadere', 'Scassinare'];
-        classes.nomade = ['Famiglia', 'Guidare', 'Atletica', 'Percepire', 'Fucili', 'Resistenza', 'Riparare', 'Mischia'];
+        classes.rocker = ['leadership', 'suonare', 'sprawl', 'percepire', 'stile', 'comporre', 'raggirare', 'sedurre'];
+        classes.solitario = ['mischia', 'atletica', 'percepire', 'fucili', 'furtività', 'rissa', 'forza', 'pistole'];
+        classes.netrunner = ['interfaccia', 'programmare', 'rete', 'accademiche', 'scienze', 'elettronica', 'percepire', 'furtività'];
+        classes.tecnico = ['riparare', 'cybertecnologia', 'scienze', 'elettronica', 'guarire', 'intuire', 'diagnosi', 'percepire'];
+        classes.reporter = ['sprawl', 'intervistare', 'mondanità', 'credibilità', 'intuire', 'percepire', 'raggirare', 'comporre'];
+        classes.poliziotto = ['autorità', 'mischia', 'sprawl', 'interrogare', 'rissa', 'intuire', 'pistole', 'atletica'];
+        classes.corporativo = ['risorse', 'trucco', 'percepire', 'intuire', 'persuadere', 'raggirare', 'finanza', 'stile'];
+        classes.ricettatore = ['contatti', 'mischia', 'falsificare', 'intimidire', 'rissa', 'raggirare', 'persuadere', 'scassinare'];
+        classes.nomade = ['famiglia', 'guidare', 'atletica', 'percepire', 'fucili', 'resistenza', 'riparare', 'mischia'];
 
         var roles_toString = roles.join(', ');
 
-        if(args[0])
+        db.users.findOne({ userid: message.author.id}, (err, character) =>
         {
-            db.users.findOne({ userid: message.author.id}, (err, character) =>
+            if(character.role == null)
             {
-                if(character.role == null)
-                {
-                    message.channel.send(`Prima devi selezionare il tuo ruolo. Scegli tra ${roles_toString}`);
-                }
-                else
-                {
-                    var ch = character.role.toLowerCase();
-                    var to_str = classes[ch].join(', ');
+                message.channel.send(`Prima di tutto devi selezionare il tuo ruolo. Scegli tra ${roles_toString}`);
+            }
+            else
+            {
+                var role = character.role;
+                var to_str = classes[role].join(', ');
 
-                    if(classes[ch].includes(args[0]))
+                if(args[0])
+                {
+                    args[0] = args[0].toLowerCase();
+
+                    if(classes[role].includes(args[0]))
                     {
                         if(isNaN(args[1]))
                         {
-                            message.channel.send(`Per registrare la skill professionale ${args[0]} devi far seguire un numero. !skill Rissa 4`);
+                            message.channel.send(`Per registrare la skill professionale ${args[0]} devi far seguire un numero. !skill rissa 4`);
                         }
                         else
                         {
@@ -84,30 +86,12 @@ module.exports =
                             }
                         }
                     }
-                    else
-                    {
-                        message.channel.send(`Hai **40** punti da distribuire in abilità professionali. La lista delle abilità professionali della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne anche solo alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
-                    }
-                }
-            });
-        }
-        else
-        {
-            db.users.findOne({ userid: message.author.id}, (err, character) =>
-            {
-                var roles_toString = roles.join(', ');
-
-                if(character.role == null)
-                {
-                    message.channel.send(`Prima devi selezionare il tuo ruolo. Scegli tra ${roles_toString}`);
                 }
                 else
                 {
-                    var ch = character.role.toLowerCase();
-                    var to_str = classes[ch].join(', ');
-                    message.channel.send(`Hai **40** punti da distribuire in abilità professionali. La lista delle abilità professionali della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill Abilità *(prima lettera maiuscola)* grado**. Puoi sceglierne anche solo alcune tra esse. Il grado deve essere compreso tra 1 e 10. Ex: !skill Rissa 4`);
+                    message.channel.send(`Hai **40** punti da distribuire in abilità professionali. La lista delle abilità professionali della classe *${character.role}* è *${to_str}*. Il comando per registrare le skills è **!skill abilità grado**. Puoi sceglierne anche solo alcune tra esse. Il grado deve essere compreso tra 1 e 10. *Esempio*: **!skill rissa 4**`);
                 }
-            });    
-        }
+            }
+        });
     }
 }

@@ -67,7 +67,7 @@ module.exports =
                         }
                         else
                         {
-                            message.channel.send(`La somma dei punti spesi nelle skills professionali non è corretta, deve essere 40. Col comando *!skills* puoi aggiornare e modificare quelle inserite`);
+                            message.channel.send(`La somma dei punti spesi nelle **skills professionali** non è corretta, deve essere 40. Col comando *!skills* puoi aggiornare e modificare quelle inserite`);
                         }
                     });
                 }
