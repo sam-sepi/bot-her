@@ -46,15 +46,15 @@ module.exports =
                             proof_list[i] = char[i]['skill'];
                         }
 
-                        proof_listoStr = proof_list.join(', ');
-                        proof_ranktoStr = proof_rank.join(', ');
+                        proof_listoStr = proof_list.join(', '); //list skill in db
+                        proof_ranktoStr = proof_rank.join(', '); //list rank in db
 
                         if(proof_rank.reduce((a, b) => a + b, 0) == 40) //if rank is 40
                         {
-                            db.freeskills.find({userid: message.author.id}, (err, chr) => //free skill
+                            db.freeskills.find({userid: message.author.id}, (err, chr) => //freeskill
                             {
                                 let fs_rank = [];
-                                let fs_list = [];
+                                let fs_list = []; 
 
                                 for(i = 0; i < chr.length; i++)
                                 {
@@ -62,8 +62,8 @@ module.exports =
                                     fs_list[i] = chr[i]['skill'];
                                 }
 
-                                fs_ranktoStr = fs_rank.join(', ');
-                                fs_listoStr = fs_list.join(', ');
+                                fs_ranktoStr = fs_rank.join(', '); //list freeskill in db
+                                fs_listoStr = fs_list.join(', '); //list rank in db
 
                                 if(fs_rank.reduce((a, b) => a + b, 0) == 12) //total rank freeskill 12
                                 {
@@ -72,7 +72,7 @@ module.exports =
                                         if(replc == 1)
                                         {
                                             //finaliz.
-                                            message.channel.send(`Finalizzazione del personaggio completata. Ben fatto Choomba!`);
+                                            message.channel.send(`Finalizzazione del personaggio completata. Ben fatto Choomba! Per giocare digita **!roll** seguito da una statistica, oppure da una statistica e un'abilità. Esempio: ***!roll freddezza*** oppure ***!roll riflessi pistole***`);
                                         }
                                     });
                                 }
