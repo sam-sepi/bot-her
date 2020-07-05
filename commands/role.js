@@ -13,7 +13,7 @@ module.exports =
         //ROLES TO STRING
         var roles_toString = roles.join(', ');
 
-        //ARG
+        //ARG after command
         if(args[0])
         {
             let role = args[0].toLowerCase();

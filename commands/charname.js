@@ -9,21 +9,23 @@ module.exports =
 
         if(args[0] && args[0].length < 20)
         {
+            //check if already exists
             db.findOne({userid: message.author.id}, (err, character) =>
             {
                 if(character != null) 
                 {
-                    message.author.send('Esiste giù un personaggio associato all\'ID utente');
+                    message.author.send('Esiste giù un personaggio associato all\'ID utente'); //dm already exists
                 }
                 else
                 {
+                    //character
                     user = 
                     {
                         userid: message.author.id,
                         name: args[0],
                         end: false
                     };
-
+                    //character storage
                     db.insert(user, (err, newCharacter) => 
                     {
                         message.channel.send(`Ora choomba diamo un ruolo al personaggio. Digita *!role*.`);
@@ -34,6 +36,7 @@ module.exports =
         }
         else
         {
+            //TUTORIAL MSG
             message.channel.send('Invia un nome, inferiore a venti caratteri. *Esempio*: **!charname Joe**');
         }
     }

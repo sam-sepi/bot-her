@@ -80,7 +80,7 @@ module.exports =
                                 }
                                 else
                                 {
-                                    message.channel.send(`Puoi ottenere un risultato per la tua azione solo se il secondo argomento è un statistica scelta tra *${skill_toString}*. Esempio: **!roll intelligenza rete**`);
+                                    message.channel.send(`Puoi ottenere un risultato per la tua azione solo se il secondo argomento è un statistica scelta tra *${!skill_toStr}*. Esempio: **!roll intelligenza rete**`);
                                 }
                             }
                             else
