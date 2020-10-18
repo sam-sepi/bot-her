@@ -100,7 +100,7 @@ module.exports =
                     }
                     else
                     {
-
+                        message.channel.send(`Puoi ottenere un risultato per la tua azione solo se il primo argomento è un statistica scelta tra *${stat_toString}*. Esempio: **!roll intelligenza**`);
                     }
                 }
                 else

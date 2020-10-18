@@ -64,7 +64,7 @@ module.exports =
                                         db.stats.update({userid: message.author.id, stat: args[0]}, {$set: {rank: args[1]}}, {}, (err, numReplaced) => 
                                         {
                                             console.log(numReplaced);
-                                            message.channel.send(`Statistica ${args[0]} aggiornata. Se ancora non hai inserito le abilità digita *!skill*`);
+                                            message.channel.send(`Statistica ${args[0]} aggiornata. Se ancora non hai inserito le abilità digita *!skill*, altrimenti *!end* per concludere la registrazione.`);
                                         });
                                     }
                                 });
